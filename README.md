@@ -1,4 +1,7 @@
 # Markdown-to-HTML-PDF
+
+**version 1.0.0**
+
 This is an exam project in programming C, Odense Tekniske Gymnasium, Denmark
 
 ---
