@@ -1,8 +1,8 @@
 # Markdown-to-HTML-PDF
 
-**version 1.0.0**
+**Version 0.0.1**
 
-This is an exam project in programming C.
+A simple Markdown recursive descent parser written in Python 3. The project was written as an exam project.
 
 ---
 
