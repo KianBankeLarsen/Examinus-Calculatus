@@ -17,7 +17,7 @@ $(document).ready(function () {
 			container.append(inputbox_content)
 			container.append("<br>")
             inputbox.val("")
-            $("#container").animate({scrollTop:$("#container")[0].scrollHeight}, 1000);
+            $("#container").stop().animate({scrollTop:$("#container")[0].scrollHeight}, 1500);
 		}
 	})
 	inputbox.keyup(function (e) {
