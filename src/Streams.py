@@ -23,7 +23,7 @@ class InputStream:
             self.col += 1
 
             if self.current_char == "\n":
-                self.col = 1
+                self.col = 0
                 self.row += 1
 
     def peek(self):
