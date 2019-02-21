@@ -2,10 +2,11 @@
 <head>
     <title>Exam Calculator</title>
     <script type="text/javascript" src="{{url_for('static',filename='lib/jquery-3.3.1.min.js')}}"></script>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"
+    <script type="text/javascript" src="{{url_for('static',filename='js/script.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"/>
 </head>
 <body>
-    <div id="container">this is a test</div>
-    <div id="inputContainer">this is another test</div>
+    <div id="container"></div>
+    <div id="inputContainer"> <input placeholder="Input expression here" type="text" id="inputbox"/> </div>
 </body>
 </html>

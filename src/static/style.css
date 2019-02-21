@@ -1,13 +1,70 @@
-#container{
-    background-color: #324087;
-    height:90%;
+@font-face {
+    font-family: codeFont;
+    src: url(DejaVuSansMono.ttf);
 }
 
-#inputContainer{
-    background-color: #202957;
-    height:10%;
+body {
+    font-family: codeFont;
+    background-color: #1D1F21;
+    padding: 0;
+    margin: 0;
 }
 
-body{
-    margin:0;
+#container,
+#inputContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
 }
+
+#container {
+    scrollbar-width: thin;
+    scrollbar-color: #f1c40f #1d1f21;
+    overflow-wrap: break-word;
+    overflow: auto;
+    top: 0;
+    background-color: #1D1F21;
+    color: white;
+    bottom: 3em;
+    padding:.5em;
+}
+
+#inputContainer {
+    display: block;
+    bottom:0;
+    height:2em;
+    padding:.5em;
+    margin-top:1em;
+    background-color: #282a2e;
+}
+
+#inputbox {
+    height: 100%;
+    width: 100%;
+    font-size: 1.6em;
+    background-color: transparent;
+    color: white;
+    border: 0;
+}
+
+input{
+    font-family: inherit;
+}
+
+/*Chrome, Safari, Opera*/
+::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #1d1f21;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: #f1c40f;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #c49f0a;
+        }
