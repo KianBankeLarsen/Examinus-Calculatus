@@ -1,0 +1,13 @@
+#container{
+    background-color: #324087;
+    height:90%;
+}
+
+#inputContainer{
+    background-color: #202957;
+    height:10%;
+}
+
+body{
+    margin:0;
+}
