@@ -25,14 +25,15 @@ body {
     top: 0;
     background-color: #1d1f21;
     color: white;
-    bottom: 3em;
-    padding:.5em;
+    bottom: 1em;
+    padding:.3em;
+    font-size: 3em;
 }
 
 #inputContainer {
     display: block;
     bottom:0;
-    height:2em;
+    height:5em;
     padding:.5em;
     margin-top:1em;
     background-color: #282a2e;
@@ -41,7 +42,7 @@ body {
 #inputbox {
     height: 100%;
     width: 100%;
-    font-size: 1.6em;
+    font-size: 4em;
     background-color: transparent;
     color: white;
     border: 0;

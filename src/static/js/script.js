@@ -16,6 +16,8 @@ $(document).ready(function () {
 			var inputbox_content = inputbox.val()
 			container.append(inputbox_content)
 			container.append("<br>")
+			container.append("=" + math.eval(inputbox_content))
+			container.append("<br>")
             inputbox.val("")
             $("#container").stop().animate({scrollTop:$("#container")[0].scrollHeight}, 1500);
 		}
