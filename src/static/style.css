@@ -46,6 +46,7 @@ body {
     background-color: transparent;
     color: white;
     border: 0;
+    caret-color: #f1c40f;
 }
 
 input{

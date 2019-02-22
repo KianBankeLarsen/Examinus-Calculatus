@@ -1,6 +1,3 @@
-alert("Welcome to the website Markus Solecki Ellyton, hope you enjoy!!")
-
-
 // A $( document ).ready() block.
 $(document).ready(function () {
 	var inputbox = $("#inputbox")
