@@ -1,6 +1,7 @@
 // A $( document ).ready() block.
 $(document).ready(function () {
 	var inputbox = $("#inputbox")
+	inputbox.focus()
 	var container = $("#container")
 	var down = false
 	inputbox.keydown(function (e) {
@@ -25,3 +26,4 @@ $(document).ready(function () {
 	})
 	console.log("ready!");
 });
+

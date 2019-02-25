@@ -1,72 +1,81 @@
-@font-face {
-    font-family: codeFont;
-    src: url(DejaVuSansMono.ttf);
+ @font-face {
+     font-family: codeFont;
+     src: url(DejaVuSansMono.ttf);
+}
+ body {
+     font-family: codeFont;
+     background-color: #1d1f21;
+     padding: 0;
+     margin: 0;
 }
 
-body {
-    font-family: codeFont;
-    background-color: #1d1f21;
-    padding: 0;
-    margin: 0;
-}
-
-#container,
+ #container,
 #inputContainer {
-    position: absolute;
-    left: 0;
-    right: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
-#container {
-    scrollbar-width: thin;
-    scrollbar-color: #f1c40f #1d1f21;
-    overflow-wrap: break-word;
-    overflow: auto;
-    top: 0;
-    background-color: #1d1f21;
-    color: white;
-    bottom: 2em;
-    padding:.3em;
-    font-size: 3em;
+ #container {
+     scrollbar-width: thin;
+     scrollbar-color: #f1c40f #1d1f21;
+     overflow-wrap: break-word;
+     overflow: auto;
+     top: 0;
+     background-color: #1d1f21;
+     color: white;
+     bottom: 2em;
+     padding:.3em;
+     font-size: 3em;
 }
-
-#inputContainer {
-    display: block;
-    bottom:0;
-    height:5em;
-    padding:.5em;
-    margin-top:1em;
-    background-color: #282a2e;
+ #inputContainer {
+     display: flex;
+     width: 100%;
+     bottom:0;
+     height:5em;
+     padding:.5em;
+     margin-top:1em;
+     background-color: #282a2e;
+     box-sizing: border-box;
 }
-
-#inputbox {
-    height: 100%;
-    width: 100%;
-    font-size: 4em;
-    background-color: transparent;
-    color: white;
-    border: 0;
-    caret-color: #f1c40f;
+ #inputbox {
+     flex: 1;
+     height: 100%;
+     width: 100%;
+     font-size: 4em;
+     background-color: transparent;
+     color: white;
+     border: 0;
+     caret-color: #f1c40f;
 }
-
-input{
-    font-family: inherit;
+ input{
+     font-family: inherit;
 }
-
 /*Chrome, Safari, Opera*/
-::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-          background: #1d1f21;
-        }
-
-        ::-webkit-scrollbar-thumb {
-          background: #f1c40f;
-        }
-
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-          background: #c49f0a;
-        }
+ ::-webkit-scrollbar {
+     width: 6px;
+}
+ ::-webkit-scrollbar-track {
+     background: #1d1f21;
+}
+ ::-webkit-scrollbar-thumb {
+     background: #f1c40f;
+}
+/* Handle on hover */
+ ::-webkit-scrollbar-thumb:hover {
+     background: #c49f0a;
+}
+ .button {
+     flex-basis: 100px;
+     background-color: #4CAF50;
+     border: none;
+     color: white;
+     padding: 15px 25px;
+     text-align: center;
+     font-size: 16px;
+     cursor: pointer;
+     margin: 10px;
+}
+ .button:hover {
+     background-color: green;
+}
