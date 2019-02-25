@@ -1,4 +1,4 @@
-from Streams import InputStream
+from src.Streams import *
 
 PLUS = 'PLUS'
 MINUS = 'MINUS'
