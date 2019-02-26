@@ -8,7 +8,12 @@
     <link rel="icon" href="{{url_for('static', filename='billeder/calculator.png')}}" sizes="16x16 32x32" type="image/png">
 </head>
 <body>
-    <div id="container"></div>
-    <div id="inputContainer"> <input placeholder="Input expression here" type="text" id="inputbox"/> </div>
+    <div class="wrapper">
+        <div id="container"></div>
+        <div id="inputContainer">
+            <input placeholder="Input expression here" type="text" id="inputbox"/>
+            <button class="button">f(x)</button>
+        </div>
+    </div>
 </body>
 </html>
