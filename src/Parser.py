@@ -13,13 +13,13 @@ class Number(AST):
 class BinOp(AST):
     def __init__(self, left, operator, right):
         self.left = left
-        self.operator = operator.value
+        self.operator = operator
         self.right = right
 
 
 class UnaryOp(AST):
-    def __init__(self, token, operator):
-        self.token = token
+    def __init__(self, operand, operator):
+        self.operand = operand
         self.operator = operator
 
 
@@ -49,23 +49,62 @@ class Parser:
 
             result = self.expr()
 
-            self.error()
-
             self.consume(RPAREN)
             return result
             
         else:
             self.error()
 
-
     def factor(self):
-        pass
+        return self.atom()
 
     def term(self):
-        pass
+        if self.current_token.type == PLUS:
+            self.consume(PLUS)
+
+            result = self.factor()
+
+            return UnaryOp(result, Token(PLUS, '+'))
+        elif self.current_token.type == MINUS:
+            self.consume(MINUS)
+
+            result = self.factor()
+
+            return UnaryOp(result, Token(MINUS, '-'))
+
+        tree = self.factor()
+
+        while self.current_token.type in (MUL, DIV):
+            if self.current_token.type == MUL:
+                self.consume(MUL)
+                other = self.factor()
+
+                tree = BinOp(tree, Token(MUL, '*'), other)
+            elif self.current_token.type == DIV:
+                self.consume(DIV)
+                other = self.factor()
+
+                tree = BinOp(tree, Token(DIV, '/'), other)
+
+        return tree
+
 
     def expr(self):
         tree = self.term()
+
+        while self.current_token.type in (PLUS, MINUS):
+            if self.current_token.type == PLUS:
+                self.consume(PLUS)
+                other = self.term()
+
+                tree = BinOp(tree, Token(PLUS, '+'), other)
+            elif self.current_token.type == MINUS:
+                self.consume(MINUS)
+                other = self.term()
+
+                tree = BinOp(tree, Token(MINUS, '-'), other)
+
+        return tree
 
     def parse(self):
         tree = self.expr()
