@@ -91,13 +91,3 @@ class Lexer:
             self.error()
 
         return Token(EOF, 'EOF')
-
-
-source = InputStream("2+   345  -  2323 + 4 - 4\n4+4+4+4+4+sqrt")
-lex = Lexer(source)
-token = lex.get_next_token()
-
-
-while token.type != EOF:
-    print(token)
-    token = lex.get_next_token()
