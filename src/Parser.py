@@ -44,6 +44,10 @@ class Parser:
             self.consume(INT)
             return Number(current_token)
 
+        elif current_token.type == REAL:
+            self.consume(REAL)
+            return Number(current_token)
+
         elif self.current_token.type == LPAREN:
             self.consume(LPAREN)
 

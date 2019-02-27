@@ -7,6 +7,7 @@ DIV = 'DIV'
 LPAREN = 'LPAREN'
 RPAREN = 'RPAREN'
 INT = 'INT'
+REAL = 'REAL'
 EOF = 'EOF'
 
 
@@ -42,14 +43,24 @@ class Lexer:
         while self.text.current_char is not None and self.text.current_char.isspace():
             self.text.advance()
 
-    def integer(self):
+    def number(self):
         result = ''
 
         while self.text.current_char is not None and self.text.current_char.isdigit():
             result += self.text.current_char
             self.text.advance()
 
-        return int(result)
+        if self.text.current_char == ".":
+            result += "."
+            self.text.advance()
+
+            while self.text.current_char is not None and self.text.current_char.isdigit():
+                result += self.text.current_char
+                self.text.advance()
+
+            return Token(REAL, float(result))
+        else:
+            return Token(INT, int(result))
 
 
     # MAIN LEXER FUNCTION #
@@ -61,8 +72,8 @@ class Lexer:
                 continue
 
             if self.text.current_char.isdigit():
-                result = self.integer()
-                return Token(INT, result)
+                result = self.number()
+                return result
 
             if self.text.current_char == '+':
                 self.text.advance()

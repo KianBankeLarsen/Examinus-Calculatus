@@ -56,7 +56,7 @@ class DOTGenerator(NodeVisitor):
 
 
 # Creates a stream of characters for the lexer
-source = InputStream("-(3*3+2)")
+source = InputStream("(2+2)*3.1415926")
 # Creates a lexer and passes the character stream to the lexer which functions as a stream of tokens
 lex = Lexer(source)
 # Creates a parser and passes the token stream from the lexer to the parser
@@ -70,7 +70,34 @@ graph_generator.graph.format = 'png'
 graph_generator.graph.render()
 
 
-
-
 class Interpreter(NodeVisitor):
-    pass
+    def visit_BinOp(self, node):
+        operator = node.operator.type
+
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+
+        if operator == PLUS:
+            return left + right
+        elif operator == MINUS:
+            return left - right
+        elif operator == MUL:
+            return left * right
+        elif operator == DIV:
+            return left / right
+
+    def visit_UnaryOp(self, node):
+        operator = node.operator.type
+        factor = self.visit(node.operand)
+
+        if operator == PLUS:
+            return factor
+        elif operator == MINUS:
+            return - factor
+
+    def visit_Number(self, node):
+        return node.value
+
+
+interpreter = Interpreter()
+print(interpreter.visit(result))
