@@ -9,13 +9,6 @@
      margin: 0;
 }
 
- #container,
-#inputContainer {
-  position: absolute;
-  left: 0;
-  right: 0;
-}
-
  #container {
      scrollbar-width: thin;
      scrollbar-color: #f1c40f #1d1f21;
@@ -24,9 +17,10 @@
      top: 0;
      background-color: #1d1f21;
      color: white;
-     bottom: 2em;
+     bottom: 1.65em;
      padding:.3em;
      font-size: 3em;
+     flex:1;
 }
  #inputContainer {
      display: flex;
@@ -34,7 +28,6 @@
      bottom:0;
      height:5em;
      padding:.5em;
-     margin-top:1em;
      background-color: #282a2e;
      box-sizing: border-box;
 }
@@ -42,7 +35,7 @@
      flex: 1;
      height: 100%;
      width: 100%;
-     font-size: 4em;
+     font-size: 3em;
      background-color: transparent;
      color: white;
      border: 0;
@@ -65,17 +58,47 @@
  ::-webkit-scrollbar-thumb:hover {
      background: #c49f0a;
 }
+
  .button {
-     flex-basis: 100px;
-     background-color: #4CAF50;
+     flex-basis: 200px;
+     background-color: #c49f0a;
      border: none;
      color: white;
-     padding: 15px 25px;
+     padding: none;
      text-align: center;
-     font-size: 16px;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 30px;
+     margin-left: 20px;
      cursor: pointer;
-     margin: 10px;
 }
+
  .button:hover {
-     background-color: green;
+     background-color: #f1c40f;
+}
+
+ #sidebar {
+  background-color: blue;
+  width: 0;
+  margin-left: 0;
+  transition: all 0.4s cubic-bezier(1,.37,.79,1.28);
+  overflow: hidden;
+  color: white;
+}
+
+.wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+#notsidebar{
+    flex: 1;
+    background-color: #1d1f21;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar.extendedsidebar{
+    width: 20%
 }

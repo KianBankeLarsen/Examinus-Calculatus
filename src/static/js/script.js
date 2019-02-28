@@ -25,5 +25,9 @@ $(document).ready(function () {
 		console.log("keyup")
 	})
 	console.log("ready!");
+
+	$('#button').click(function () {
+		$('#sidebar').toggleClass('extendedsidebar')
+    })
 });
 
