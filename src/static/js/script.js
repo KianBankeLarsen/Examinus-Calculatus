@@ -26,8 +26,9 @@ $(document).ready(function () {
 	})
 	console.log("ready!");
 
-	$('#button').click(function () {
+	$('.hamburger').click(function () {
 		$('#sidebar').toggleClass('extendedsidebar')
+		$('.hamburger').toggleClass('is-active')
     })
 });
 

@@ -6,6 +6,7 @@
     <script type="text/javascript" src="{{url_for('static',filename='js/script.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"/>
     <link rel="icon" href="{{url_for('static', filename='billeder/calculator.png')}}" sizes="16x16 32x32" type="image/png">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='hamburgers.css')}}"/>
 </head>
 <body>
     <div class="wrapper">
@@ -13,7 +14,11 @@
             <div id="container"></div>
             <div id="inputContainer">
                 <input placeholder="Input expression here" type="text" id="inputbox"/>
-                <button class="button" id="button">f(x)</button>
+<button class="hamburger hamburger--spring" type="button">
+  <span class="hamburger-box">
+    <span class="hamburger-inner"></span>
+  </span>
+</button>
             </div>
         </div>
         <div id="sidebar">

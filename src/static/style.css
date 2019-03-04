@@ -12,7 +12,6 @@
  #container {
      scrollbar-width: thin;
      scrollbar-color: #f1c40f #1d1f21;
-     overflow-wrap: break-word;
      overflow: auto;
      top: 0;
      background-color: #1d1f21;
@@ -30,6 +29,7 @@
      padding:.5em;
      background-color: #282a2e;
      box-sizing: border-box;
+     padding-right: 0;
 }
  #inputbox {
      flex: 1;
@@ -40,6 +40,7 @@
      color: white;
      border: 0;
      caret-color: #f1c40f;
+     border-right:1px #9c9c9e solid;
 }
  input{
      font-family: inherit;
@@ -59,39 +60,26 @@
      background: #c49f0a;
 }
 
- .button {
-     flex-basis: 200px;
-     background-color: #c49f0a;
-     border: none;
-     color: white;
-     padding: none;
-     text-align: center;
-     text-decoration: none;
-     display: inline-block;
-     font-size: 30px;
-     margin-left: 20px;
-     cursor: pointer;
-}
-
  .buttonfunc{
-     width: 45%;
+     flex-basis: 49%;
      height: 10vh;
-     background-color: #c49f0a;
+     background-color: #f1c40f;
      border: none;
      color: white;
-     padding: none;
-     text-align: center;
-     text-decoration: none;
      font-size: 30px;
      cursor: pointer;
-     margin: 5px;
+     margin: auto;
+     margin-top: .1em;
+     margin-buttom: .1em;
  }
 
- .button:hover {
-     background-color: #f1c40f;
+ .buttonfunc:hover {
+     opacity: 0.7;
 }
 
  #sidebar {
+     display: flex;
+     flex-wrap: wrap;
      scrollbar-width: thin;
      scrollbar-color: #f1c40f #1d1f21;
      overflow: auto;
@@ -106,6 +94,7 @@
     display: flex;
     height: 100vh;
     width: 100%;
+    overflow-wrap: anywhere;
 }
 
 #notsidebar{
@@ -116,5 +105,5 @@
 }
 
 #sidebar.extendedsidebar{
-    width: 15%
+    width: 25%
 }
