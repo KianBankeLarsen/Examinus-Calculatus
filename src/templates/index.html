@@ -1,27 +1,28 @@
+<!DOCTYPE html>
 <html>
-<head>
-    <title>Examinus Calculatus</title>
-    <script type="text/javascript" src="{{url_for('static',filename='lib/jquery-3.3.1.min.js')}}"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.5.0/math.min.js"></script>
-    <script type="text/javascript" src="{{url_for('static',filename='js/script.js')}}"></script>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"/>
-    <link rel="icon" href="{{url_for('static', filename='billeder/calculator.png')}}" sizes="16x16 32x32" type="image/png">
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='hamburgers.css')}}"/>
-</head>
-<body>
-    <div class="wrapper">
-        <div id="notsidebar">
+   <head>
+      <title>Examinus Calculatus</title>
+      <script type="text/javascript" src="{{url_for('static',filename='lib/jquery-3.3.1.min.js')}}"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.5.0/math.min.js"></script>
+      <script type="text/javascript" src="{{url_for('static',filename='js/script.js')}}"></script>
+      <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}"/>
+      <link rel="icon" href="{{url_for('static', filename='billeder/calculator.png')}}" sizes="16x16 32x32" type="image/png">
+      <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='hamburgers.css')}}"/>
+   </head>
+   <body>
+      <div class="wrapper">
+         <div id="notsidebar">
             <div id="container"></div>
             <div id="inputContainer">
-                <input placeholder="Input expression here" type="text" id="inputbox"/>
-<button class="hamburger hamburger--spring" type="button">
-  <span class="hamburger-box">
-    <span class="hamburger-inner"></span>
-  </span>
-</button>
+               <input placeholder="Input expression here" type="text" id="inputbox"/>
+               <button class="hamburger hamburger--spring" type="button">
+               <span class="hamburger-box">
+               <span class="hamburger-inner"></span>
+               </span>
+               </button>
             </div>
-        </div>
-        <div id="sidebar">
+         </div>
+         <div id="sidebar">
             <button class="buttonfunc" id="button1">test</button>
             <button class="buttonfunc" id="button2">test</button>
             <button class="buttonfunc" id="button3">test</button>
@@ -64,7 +65,8 @@
             <button class="buttonfunc" id="button21">test</button>
             <button class="buttonfunc" id="button22">test</button>
             <button class="buttonfunc" id="button23">test</button>
-        </div>
-    </div>
-</body>
+         </div>
+      </div>
+   </body>
 </html>
+
