@@ -101,14 +101,22 @@
      width: 25%
 }
 
- .number {
-     color: yellow;
+ .paren {
+     color: #c5c8c6ff;
  }
 
- .word {
+ .number {
+     color: #de935f;
+ }
+
+ .function {
      color: #81a2be;
  }
 
+ .identifier {
+     color: #cc6666;
+ }
+
  .symbol {
-     color: maroon;
+     color: #8abeb7;
  }
