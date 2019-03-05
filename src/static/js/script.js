@@ -24,12 +24,16 @@ $(document).ready(function() {
     })
     inputbox.keyup(function(e) {
         down = false
-        console.log("keyup")
+        console.log("keyup<")
     })
-    console.log("ready!");
 
     $('.hamburger').click(function() {
         $('#sidebar').toggleClass('extendedsidebar')
         $('.hamburger').toggleClass('is-active')
     })
+
+    $('.buttonfunc').click(function() {
+        alert('Wham!')
+    })
+    console.log("ready!");
 });
