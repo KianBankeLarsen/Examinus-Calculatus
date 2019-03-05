@@ -8,11 +8,9 @@
      padding: 0;
      margin: 0;
 }
-
  #container {
      scrollbar-width: thin;
      scrollbar-color: #f1c40f #1d1f21;
-     overflow-wrap: break-word;
      overflow: auto;
      top: 0;
      background-color: #1d1f21;
@@ -30,16 +28,18 @@
      padding:.5em;
      background-color: #282a2e;
      box-sizing: border-box;
+     padding-right: 0;
 }
  #inputbox {
      flex: 1;
      height: 100%;
-     width: 100%;
+     flex-basis: 100%;
      font-size: 3em;
      background-color: transparent;
      color: white;
      border: 0;
      caret-color: #f1c40f;
+     border-right:1px #9c9c9e solid;
 }
  input{
      font-family: inherit;
@@ -58,63 +58,45 @@
  ::-webkit-scrollbar-thumb:hover {
      background: #c49f0a;
 }
-
- .button {
-     flex-basis: 200px;
-     background-color: #c49f0a;
-     border: none;
-     color: white;
-     padding: none;
-     text-align: center;
-     text-decoration: none;
-     display: inline-block;
-     font-size: 30px;
-     margin-left: 20px;
-     cursor: pointer;
-}
-
  .buttonfunc{
-     width: 45%;
+     flex-basis: 49%;
      height: 10vh;
-     background-color: #c49f0a;
+     background-color: #f1c40f;
      border: none;
      color: white;
-     padding: none;
-     text-align: center;
-     text-decoration: none;
      font-size: 30px;
      cursor: pointer;
-     margin: 5px;
- }
-
- .button:hover {
-     background-color: #f1c40f;
+     margin: auto;
+     margin-top: .1em;
+     margin-buttom: .1em;
 }
-
+ .buttonfunc:hover {
+     opacity: 0.7;
+}
  #sidebar {
+     display: flex;
+     flex-wrap: wrap;
      scrollbar-width: thin;
      scrollbar-color: #f1c40f #1d1f21;
      overflow: auto;
-  background-color: #1d1f21;
-  width: 0;
-  margin-left: 0;
-  transition: all 0.4s cubic-bezier(1,.37,.79,1.28);
-  color: white;
+     background-color: #1d1f21;
+     width: 0;
+     margin-left: 0;
+     transition: all 0.4s cubic-bezier(1,.37,.79,1.28);
+     color: white;
 }
-
-.wrapper {
-    display: flex;
-    height: 100vh;
-    width: 100%;
+ .wrapper {
+     display: flex;
+     height: 100vh;
+     width: 100%;
+     overflow-wrap: anywhere;
 }
-
-#notsidebar{
-    flex: 1;
-    background-color: #1d1f21;
-    display: flex;
-    flex-direction: column;
+ #notsidebar{
+     flex: 1;
+     background-color: #1d1f21;
+     display: flex;
+     flex-direction: column;
 }
-
-#sidebar.extendedsidebar{
-    width: 15%
+ #sidebar.extendedsidebar{
+     width: 25%
 }
