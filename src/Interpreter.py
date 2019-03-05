@@ -56,7 +56,7 @@ class DOTGenerator(NodeVisitor):
 
 
 # Creates a stream of characters for the lexer
-source = InputStream("3(2)(3)")
+source = InputStream("3(2)(3-3)+4*2+3/2*4-2")
 # Creates a lexer and passes the character stream to the lexer which functions as a stream of tokens
 lex = Lexer(source)
 # Creates a parser and passes the token stream from the lexer to the parser
