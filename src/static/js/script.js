@@ -20,9 +20,9 @@ $(document).ready(function() {
             console.log("keydown");
             var inputbox_content = inputbox.val();
             var result = await get_result(inputbox_content);
-            container.append(inputbox_content);
+            container.append(highlight(inputbox_content));
             container.append("<br>");
-            container.append("= " + result);
+            container.append(highlight("= " + result));
             container.append("<br>" + "<br>");
             inputbox.val("");
             $("#container").stop().animate({

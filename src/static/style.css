@@ -100,3 +100,15 @@
  #sidebar.extendedsidebar{
      width: 25%
 }
+
+ .number {
+     color: yellow;
+ }
+
+ .word {
+     color: #81a2be;
+ }
+
+ .symbol {
+     color: maroon;
+ }
