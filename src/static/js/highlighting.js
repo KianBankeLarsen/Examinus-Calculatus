@@ -4,7 +4,7 @@ var lexer = new Lexer(function d() {
     return null;
 });
 
-lexer.addRule(/\d+/, function(lexeme) {
+lexer.addRule(/(\d+(\.\d*)?)/, function(lexeme) {
     output = output + "<span class='number'>" + lexeme + '</span>';
     console.log(lexeme);
     output = output + " ";
