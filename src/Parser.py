@@ -96,7 +96,13 @@ class Parser:
         if self.current_token.type in (LPAREN, MUL, DIV):
             while self.current_token.type in (LPAREN, MUL, DIV):
                 if self.current_token.type == LPAREN:
-                    result = self.atom()
+                    result = self.paren_expr()
+
+                    while self.current_token.type == POW:
+                        self.consume(POW)
+                        factor = self.factor()
+                        result = BinOp(result, Token(POW, '^'), factor)
+
                     tree = BinOp(tree, Token(MUL, '*'), result)
 
                 elif self.current_token.type == MUL:
