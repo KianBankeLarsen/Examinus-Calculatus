@@ -8,6 +8,7 @@ LPAREN = 'LPAREN'
 RPAREN = 'RPAREN'
 INT = 'INT'
 REAL = 'REAL'
+POW = 'POW'
 EOF = 'EOF'
 
 
@@ -98,6 +99,10 @@ class Lexer:
             if self.text.current_char == ')':
                 self.text.advance()
                 return Token(RPAREN, ')')
+
+            if self.text.current_char == '^':
+                self.text.advance()
+                return Token(POW, '^')
 
             self.error()
 

@@ -85,6 +85,8 @@ class Interpreter(NodeVisitor):
             return left * right
         elif operator == DIV:
             return left / right
+        elif operator == POW:
+            return left ** right
 
     def visit_UnaryOp(self, node):
         operator = node.operator.type

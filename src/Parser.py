@@ -68,7 +68,14 @@ class Parser:
             self.error()
 
     def factor(self):
-        return self.atom()
+        tree = self.atom()
+
+        while self.current_token.type == POW:
+            self.consume(POW)
+            result = self.factor()
+            tree = BinOp(tree, Token(POW, '^'), result)
+
+        return tree
 
     def term(self):
         if self.current_token.type == PLUS:
@@ -89,7 +96,7 @@ class Parser:
         if self.current_token.type in (LPAREN, MUL, DIV):
             while self.current_token.type in (LPAREN, MUL, DIV):
                 if self.current_token.type == LPAREN:
-                    result = self.paren_expr()
+                    result = self.atom()
                     tree = BinOp(tree, Token(MUL, '*'), result)
 
                 elif self.current_token.type == MUL:

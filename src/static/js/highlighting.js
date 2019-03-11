@@ -12,7 +12,7 @@ lexer.addRule(/(\d+(\.\d*)?)/, function(lexeme) {
     output = output + "<span class='identifier'>" + lexeme + "</span>";
     console.log(lexeme);
     output = output + " ";
-}).addRule(/[=\+\-\*\/]/, function(lexeme) {
+}).addRule(/[=\+\-\*^/]/, function(lexeme) {
     output = output + "<span class='symbol'>" + lexeme + "</span>";
     console.log(lexeme);
     output = output + " ";
