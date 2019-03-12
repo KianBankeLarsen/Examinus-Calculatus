@@ -68,18 +68,18 @@ class DOTGenerator(NodeVisitor):
 
 
 # Creates a stream of characters for the lexer
-source = InputStream("sqrt (3*3)")
+#source = InputStream("sqrt (3*3)")
 # Creates a lexer and passes the character stream to the lexer which functions as a stream of tokens
-lex = Lexer(source)
+#lex = Lexer(source)
 # Creates a parser and passes the token stream from the lexer to the parser
-parser = Parser(lex)
+#parser = Parser(lex)
 # Parses the stream from the lexer and creates an AST
-result = parser.parse()
+#result = parser.parse()
 # Creates a DOTGenerator, which visits every node and creates a graph of the AST.
-graph_generator = DOTGenerator()
-graph_generator.visit(result)
-graph_generator.graph.format = 'png'
-graph_generator.graph.render()
+#graph_generator = DOTGenerator()
+#graph_generator.visit(result)
+#graph_generator.graph.format = 'png'
+#graph_generator.graph.render()
 
 
 class Interpreter(NodeVisitor):
@@ -116,5 +116,5 @@ class Interpreter(NodeVisitor):
         return function_handler.call(node.function, [self.visit(node.args)])
 
 
-interpreter = Interpreter()
-print(interpreter.visit(result))
+#interpreter = Interpreter()
+#print(interpreter.visit(result))
