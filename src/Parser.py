@@ -23,6 +23,12 @@ class UnaryOp(AST):
         self.operator = operator
 
 
+class FuncCall(AST):
+    def __init__(self, function, args):
+        self.function = function
+        self.args = args
+
+
 class Parser:
     def __init__(self, lexer):
         self.lexer = lexer
@@ -50,6 +56,15 @@ class Parser:
         else:
             self.error()
 
+    def function_call(self):
+        function_name = self.current_token.value.lower()
+
+        self.consume(IDENTIFIER)
+
+        args = self.paren_expr()
+
+        return FuncCall(function_name, args)
+
     def atom(self):
         current_token = self.current_token
 
@@ -64,6 +79,9 @@ class Parser:
         elif current_token.type == LPAREN:
             return self.paren_expr()
             
+        elif current_token.type == IDENTIFIER:
+            return self.function_call()
+
         else:
             self.error()
 

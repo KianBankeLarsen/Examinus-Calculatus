@@ -1,6 +1,8 @@
 from src.Parser import *
+from src.Functions import *
 from graphviz import Graph
 
+function_handler = Function()
 
 class NodeVisitor:
     def visit(self, node):
@@ -54,20 +56,30 @@ class DOTGenerator(NodeVisitor):
 
         return id1
 
+    def visit_FuncCall(self, node):
+        id1 = self.add_node("FuncCall")
+        id2 = self.add_node(node.function)
+        id3 = self.visit(node.args)
+
+        self.add_edge(id1, id2)
+        self.add_edge(id1, id3)
+
+        return id1
+
 
 # Creates a stream of characters for the lexer
-#source = InputStream("3(2)(3-3)+4*2+3/2*4-2")
+source = InputStream("sqrt (3*3)")
 # Creates a lexer and passes the character stream to the lexer which functions as a stream of tokens
-#lex = Lexer(source)
+lex = Lexer(source)
 # Creates a parser and passes the token stream from the lexer to the parser
-#parser = Parser(lex)
+parser = Parser(lex)
 # Parses the stream from the lexer and creates an AST
-#result = parser.parse()
+result = parser.parse()
 # Creates a DOTGenerator, which visits every node and creates a graph of the AST.
-#graph_generator = DOTGenerator()
-#graph_generator.visit(result)
-#graph_generator.graph.format = 'png'
-#graph_generator.graph.render()
+graph_generator = DOTGenerator()
+graph_generator.visit(result)
+graph_generator.graph.format = 'png'
+graph_generator.graph.render()
 
 
 class Interpreter(NodeVisitor):
@@ -100,6 +112,9 @@ class Interpreter(NodeVisitor):
     def visit_Number(self, node):
         return node.value
 
+    def visit_FuncCall(self, node):
+        return function_handler.call(node.function, [self.visit(node.args)])
 
-#interpreter = Interpreter()
-#print(interpreter.visit(result))
+
+interpreter = Interpreter()
+print(interpreter.visit(result))

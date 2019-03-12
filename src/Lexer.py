@@ -9,6 +9,7 @@ RPAREN = 'RPAREN'
 INT = 'INT'
 REAL = 'REAL'
 POW = 'POW'
+IDENTIFIER = 'IDENTIFIER'
 EOF = 'EOF'
 
 
@@ -63,7 +64,14 @@ class Lexer:
         else:
             return Token(INT, int(result))
 
+    def identifier(self):
+        result = ''
 
+        while self.text.current_char is not None and self.text.current_char.isalpha():
+            result += self.text.current_char
+            self.text.advance()
+
+        return Token(IDENTIFIER, result)
     # MAIN LEXER FUNCTION #
     def get_next_token(self):
         while self.text.current_char is not None:
@@ -74,6 +82,10 @@ class Lexer:
 
             if self.text.current_char.isdigit():
                 result = self.number()
+                return result
+
+            if self.text.current_char.isalpha():
+                result = self.identifier()
                 return result
 
             if self.text.current_char == '+':
