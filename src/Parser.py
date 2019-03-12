@@ -78,18 +78,17 @@ class Parser:
         return tree
 
     def term(self):
+        operator = None
+
         if self.current_token.type == PLUS:
             self.consume(PLUS)
 
-            result = self.factor()
+            operator = PLUS
 
-            return UnaryOp(result, Token(PLUS, '+'))
         elif self.current_token.type == MINUS:
             self.consume(MINUS)
 
-            result = self.factor()
-
-            return UnaryOp(result, Token(MINUS, '-'))
+            operator = MINUS
 
         tree = self.factor()
 
@@ -116,7 +115,12 @@ class Parser:
 
                     tree = BinOp(tree, Token(DIV, '/'), other)
 
-        return tree
+        if operator == PLUS:
+            return UnaryOp(tree, Token(PLUS, '+'))
+        if operator == MINUS:
+            return UnaryOp(tree, Token(MINUS, '-'))
+        else:
+            return tree
 
     def expr(self):
         tree = self.term()
