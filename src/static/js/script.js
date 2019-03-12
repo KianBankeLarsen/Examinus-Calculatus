@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    var list = [];
+    var n = 0;
     var inputbox = $("#inputbox");
     inputbox.focus();
     var container = $("#container");
@@ -17,10 +19,11 @@ $(document).ready(function() {
                 return;
             }
             down = true;
-            console.log("keydown");
+            n = 0;
             var inputbox_content = inputbox.val();
             var result = await get_result(inputbox_content);
             container.append(highlight(inputbox_content));
+            list.push(inputbox_content);
             container.append("<br>");
             container.append(highlight("= " + result));
             container.append("<br>" + "<br>");
@@ -29,10 +32,34 @@ $(document).ready(function() {
                 scrollTop: $("#container")[0].scrollHeight
             }, 1500);
         }
+        if (e.which === 38) {
+            if (down) {
+                return;
+            }
+            if (0 < n <= list.length) {
+                if (n !== list.length) {
+                    n += 1
+                }
+                inputbox.val(list[list.length-n]);
+            }
+            down = true;
+        }
+
+        if (e.which === 40) {
+            if (down) {
+                return;
+            }
+            if (list.length >= n > 0) {
+                if (n !== 1) {
+                    n -= 1
+                }
+                inputbox.val(list[list.length-n]);
+            }
+            down = true;
+        }
     });
     inputbox.keyup(function(e) {
         down = false;
-        console.log("keyup")
     });
     $('.hamburger').click(function() {
         $('#sidebar').toggleClass('extendedsidebar');
