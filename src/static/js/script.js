@@ -36,11 +36,11 @@ $(document).ready(function() {
             if (down) {
                 return;
             }
-            if (0 < n <= list.length) {
+            if (0 <= n && n <= list.length) {
                 if (n !== list.length) {
-                    n += 1
+                    n += 1;
+                    inputbox.val(list[list.length-n]);
                 }
-                inputbox.val(list[list.length-n]);
             }
             down = true;
         }
@@ -49,11 +49,14 @@ $(document).ready(function() {
             if (down) {
                 return;
             }
-            if (list.length >= n > 0) {
+            if (list.length >= n && n > 0) {
                 if (n !== 1) {
-                    n -= 1
+                    n -= 1;
+                    inputbox.val(list[list.length-n]);
+                } else {
+                    inputbox.val("");
+                    n = 0;
                 }
-                inputbox.val(list[list.length-n]);
             }
             down = true;
         }
