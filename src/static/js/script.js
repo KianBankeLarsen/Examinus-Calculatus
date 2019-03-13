@@ -64,6 +64,9 @@ $(document).ready(function() {
     $('.hamburger').click(function() {
         $('#sidebar').toggleClass('extendedsidebar');
         $('.hamburger').toggleClass('is-active')
+        $("#container").stop().animate({
+                scrollTop: $("#container")[0].scrollHeight
+            }, 0);
     });
 
     $('.buttonfunc').click(function() {
