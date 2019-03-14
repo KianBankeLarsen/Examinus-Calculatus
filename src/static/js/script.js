@@ -1,6 +1,7 @@
 $(document).ready(function() {
     var list = [];
     var n = 0;
+    var cursorpos = 0;
     var inputbox = $("#inputbox");
     inputbox.focus();
     var container = $("#container");
@@ -14,6 +15,7 @@ $(document).ready(function() {
         return result
     }
     inputbox.keydown(async function(e) {
+        cursorpos = inputbox[0].selectionStart;
         if (e.which === 13 && inputbox.val().trim() !== "") {
             if (down) {
                 return;
@@ -72,29 +74,23 @@ $(document).ready(function() {
         }, 0);
     });
 
-    /*$('.buttonfunc').click(function() {
-       alert('Wham!')
-    });*/
-
     $('#tan').click(function() {
-        insertAtCursor(inputbox, "tan()");
+        insertAtCursor(inputbox[0], "tan()", cursorpos);
     });
 
+    inputbox.click(async function(e) {
+         cursorpos = inputbox[0].selectionStart;
+    });
 
-    function insertAtCursor(myField, myValue) {
-        //IE support
-        if (document.selection) {
-            myField.focus();
-            sel = document.selection.createRange();
-            sel.text = myValue;
-        }
+    inputbox.keyup(async function(e) {
+         cursorpos = inputbox[0].selectionStart;
+    });
+    function insertAtCursor(myField, myValue, cursorpos) {
         //MOZILLA and others
-        else if (myField.selectionStart || myField.selectionStart == '0') {
-            var startPos = myField.selectionStart;
-            var endPos = myField.selectionEnd;
-            myField.value = myField.value.substring(0, startPos) +
+        if (myField.selectionStart || myField.selectionStart == '0') {
+            myField.value = myField.value.substring(0, cursorpos) +
                 myValue +
-                myField.value.substring(endPos, myField.value.length);
+                myField.value.substring(cursorpos, myField.value.length);
         } else {
             myField.value += myValue;
         }
