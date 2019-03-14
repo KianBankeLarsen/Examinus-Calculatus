@@ -39,7 +39,7 @@ $(document).ready(function() {
             if (0 <= n && n <= list.length) {
                 if (n !== list.length) {
                     n += 1;
-                    inputbox.val(list[list.length-n]);
+                    inputbox.val(list[list.length - n]);
                 }
             }
             down = true;
@@ -52,7 +52,7 @@ $(document).ready(function() {
             if (list.length >= n && n > 0) {
                 if (n !== 1) {
                     n -= 1;
-                    inputbox.val(list[list.length-n]);
+                    inputbox.val(list[list.length - n]);
                 } else {
                     inputbox.val("");
                     n = 0;
@@ -66,14 +66,38 @@ $(document).ready(function() {
     });
     $('.hamburger').click(function() {
         $('#sidebar').toggleClass('extendedsidebar');
-        $('.hamburger').toggleClass('is-active')
+        $('.hamburger').toggleClass('is-active');
         $("#container").stop().animate({
-                scrollTop: $("#container")[0].scrollHeight
-            }, 0);
+            scrollTop: $("#container")[0].scrollHeight
+        }, 0);
     });
 
-    $('.buttonfunc').click(function() {
-        alert('Wham!')
+    /*$('.buttonfunc').click(function() {
+       alert('Wham!')
+    });*/
+
+    $('#tan').click(function() {
+        insertAtCursor(inputbox, "tan()");
     });
+
+
+    function insertAtCursor(myField, myValue) {
+        //IE support
+        if (document.selection) {
+            myField.focus();
+            sel = document.selection.createRange();
+            sel.text = myValue;
+        }
+        //MOZILLA and others
+        else if (myField.selectionStart || myField.selectionStart == '0') {
+            var startPos = myField.selectionStart;
+            var endPos = myField.selectionEnd;
+            myField.value = myField.value.substring(0, startPos) +
+                myValue +
+                myField.value.substring(endPos, myField.value.length);
+        } else {
+            myField.value += myValue;
+        }
+    }
     console.log("ready!");
 });
