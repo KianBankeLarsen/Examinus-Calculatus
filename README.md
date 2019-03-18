@@ -1,17 +1,16 @@
 # Examinus Calculatus
 
-**Version 0.0.1**
+**Version 0.2.0**
 
 A simple online CAS system. The project was written as an exam project.
 
 ---
 ## Current features
-* Parser and interpreter that supports basic arithmetic, including nested expressions and the binary operators +, -, *, / and the unary operators + and -.
-
-## Planned features
+* Parser and interpreter that supports basic arithmetic, including nested expressions and the binary operators '+', '-', '*', '/', the unary operators '+', '-' and '!', and functions calls.
 * A web-application that lets you interactively evaluate expressions.
     * Syntax highlighting
     * Built-in functions list.
+## Planned features
 * Support for simple algebra.
 * Support for number theory.
 * Support for calculations with units, and conversions between units.

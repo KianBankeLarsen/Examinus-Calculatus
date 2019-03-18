@@ -1,5 +1,6 @@
 from src.Parser import *
 from graphviz import Graph
+import math
 
 
 class NodeVisitor:
@@ -18,14 +19,14 @@ class DOTGenerator(NodeVisitor):
         self.graph = Graph()
 
     def add_node(self, label):
-        self.graph.node(str(self.nodes), label)
+        self.graph.node(str(self.nodes), label, color="#c5c8c6ff", fontcolor="#c5c8c6ff")
 
         self.nodes += 1
 
         return str(self.nodes - 1)
 
     def add_edge(self, start, end):
-        self.graph.edge(start, end)
+        self.graph.edge(start, end, color="#c5c8c6ff")
 
     def visit_BinOp(self, node):
         id1 = self.add_node("BinOp")
@@ -71,7 +72,7 @@ class DOTGenerator(NodeVisitor):
 
 
 # Creates a stream of characters for the lexer
-#source = InputStream("sqrt (2^4)")
+#source = InputStream("2!")
 # Creates a lexer and passes the character stream to the lexer which functions as a stream of tokens
 #lex = Lexer(source)
 # Creates a parser and passes the token stream from the lexer to the parser
@@ -84,9 +85,11 @@ class DOTGenerator(NodeVisitor):
 #graph_generator.graph.format = 'png'
 #graph_generator.graph.render()
 
+
 class Interpreter(NodeVisitor):
     def __init__(self, function_handler=None):
         self.function_handler = function_handler
+        self.function_handler.interpreter = self
 
     def visit_BinOp(self, node):
         operator = node.operator.type
@@ -113,6 +116,8 @@ class Interpreter(NodeVisitor):
             return factor
         elif operator == MINUS:
             return - factor
+        elif operator == FACTORIAL:
+            return self.function_handler.call('factorial', [node.operand])
 
     def visit_Number(self, node):
         if isinstance(node.value, int) or node.value.is_integer():
@@ -182,6 +187,12 @@ class IntegerResult(Result):
     def __str__(self):
         return str(self.value)
 
+    def __int__(self):
+        return self.value
+
+    def __float__(self):
+        return float(self.value)
+
 
 class FloatResult(Result):
     def __init__(self, value, precision=15):
@@ -209,6 +220,9 @@ class FloatResult(Result):
     def __str__(self):
         return str(self.value)
 
+    def __float__(self):
+        return self.value
+
 
 class RationalResult(Result):
     def __init__(self):
@@ -223,8 +237,9 @@ class ImageResult(Result):
 
 class FunctionHandler:
     def __init__(self):
-        self.interpreter = Interpreter()
+        self.interpreter = None
         self.graph_generator = DOTGenerator()
+
     def call(self, func_name, args):
         to_call = getattr(self, func_name, self.generic_call)
         return to_call(args)
@@ -239,6 +254,15 @@ class FunctionHandler:
         if not (max_args >= amount >= min_args):
             raise Exception("Unexpected amount of arguments.")
 
+    def make_number(self, value):
+        if isinstance(value, int):
+            return IntegerResult(value)
+        elif isinstance(value, float):
+            if value.is_integer():
+                return IntegerResult(int(value))
+            else:
+                return FloatResult(value)
+
     def sqrt(self, args):
         self.check_args(len(args), 1, 1)
 
@@ -248,13 +272,50 @@ class FunctionHandler:
 
         return result
 
+    def sin(self, args):
+        self.check_args(len(args), 1, 1)
+
+        value = self.interpreter.visit(args[0])
+
+        result = math.sin(math.radians(value))
+
+        return self.make_number(round(result, 15))
+
+    def cos(self, args):
+        self.check_args(len(args), 1, 1)
+
+        value = self.interpreter.visit(args[0])
+
+        result = math.cos(math.radians(value))
+
+        return self.make_number(round(result, 15))
+
+    def tan(self, args):
+        self.check_args(len(args), 1, 1)
+
+        value = self.interpreter.visit(args[0])
+
+        result = math.tan(math.radians(value))
+
+        return self.make_number(round(result, 15))
+
+    def factorial(self, args):
+        self.check_args(len(args), 1, 1)
+
+        value = self.interpreter.visit(args[0])
+
+        result = math.factorial(value)
+
+        return self.make_number(result)
+
     def parse(self, args):
         self.check_args(len(args), 1, 1)
 
         expression = args[0]
 
         self.graph_generator.visit(expression)
-        self.graph_generator.graph.format = 'jpeg'
+        self.graph_generator.graph.format = 'png'
+        self.graph_generator.graph.attr(bgcolor='#ffffff00', fontcolor="blue")
 
         result = self.graph_generator.graph.pipe()
 

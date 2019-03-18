@@ -11,6 +11,7 @@ REAL = 'REAL'
 POW = 'POW'
 IDENTIFIER = 'IDENTIFIER'
 SEPERATOR = 'SEPERATOR'
+FACTORIAL = 'FACTORIAL'
 EOF = 'EOF'
 
 
@@ -123,6 +124,10 @@ class Lexer:
             if self.text.current_char == ';':
                 self.text.advance()
                 return Token(SEPERATOR, ';')
+
+            if self.text.current_char == '!':
+                self.text.advance()
+                return Token(FACTORIAL, '!')
 
             self.error()
 

@@ -8,9 +8,9 @@ lexer.addRule(/(\d+(\.\d*)?)/, function(lexeme) {
     output = output + "<span class='number'>" + lexeme + '</span>';
     output = output + " ";
 }).addRule(/[a-zA-Z]+/, function(lexeme) {
-    output = output + "<span class='identifier'>" + lexeme + "</span>";
+    output = output + "<span class='function'>" + lexeme + "</span>";
     output = output + " ";
-}).addRule(/[=\+\-\*^/]/, function(lexeme) {
+}).addRule(/[=\+\-\*^/!]/, function(lexeme) {
     output = output + "<span class='symbol'>" + lexeme + "</span>";
     output = output + " ";
 }).addRule(/[\(\)]/, function(lexeme) {

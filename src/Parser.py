@@ -84,14 +84,29 @@ class Parser:
 
         if current_token.type == INT:
             self.consume(INT)
-            return Number(current_token)
+            tree = Number(current_token)
+            if self.current_token.type == FACTORIAL:
+                self.consume(FACTORIAL)
+                tree = UnaryOp(tree, Token(FACTORIAL, '!'))
+
+            return tree
 
         elif current_token.type == REAL:
             self.consume(REAL)
-            return Number(current_token)
+            tree = Number(current_token)
+            if self.current_token.type == FACTORIAL:
+                self.consume(FACTORIAL)
+                tree = UnaryOp(tree, Token(FACTORIAL, '!'))
+
+            return tree
 
         elif current_token.type == LPAREN:
-            return self.paren_expr()
+            tree = self.paren_expr()
+            if self.current_token.type == FACTORIAL:
+                self.consume(FACTORIAL)
+                tree = UnaryOp(tree, Token(FACTORIAL, '!'))
+
+            return tree
             
         elif current_token.type == IDENTIFIER:
             return self.function_call()
@@ -111,6 +126,7 @@ class Parser:
             operator = MINUS
 
         tree = self.atom()
+
 
         while self.current_token.type == POW:
             self.consume(POW)
