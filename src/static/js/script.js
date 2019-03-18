@@ -6,12 +6,14 @@ $(document).ready(function() {
     inputbox.focus();
     var container = $("#container");
     var down = false;
+
     async function get_result(expression) {
         var result;
         var url = '/calc/' + expression;
-        await $.get(url, function(data, status) {
-            result = data;
+        await $.get(url, function(data, status, xhr) {
+            result = [data, xhr];
         });
+        console.log(result);
         return result
     }
     inputbox.keydown(async function(e) {
@@ -23,12 +25,24 @@ $(document).ready(function() {
             down = true;
             n = 0;
             var inputbox_content = inputbox.val();
-            var result = await get_result(inputbox_content);
+            var response = await get_result(inputbox_content);
+            var data = response[0];
+            var header = response[1];
             container.append(highlight(inputbox_content));
             list.push(inputbox_content);
-            container.append("<br>");
-            container.append(highlight("= " + result));
-            container.append("<br>" + "<br>");
+            if (header.getResponseHeader('Content-Type') === 'text/plain') {
+                container.append("<br>");
+                container.append(highlight("= " + data));
+                container.append("<br>" + "<br>");
+            } else if (header.getResponseHeader('Content-Type') === 'image/jpeg') {
+                console.log("YES!")
+                var img = new Image();
+                img.src = "data:image/jpeg;base64,"+ data;
+                container.append("<br>" + "<br>");
+                container.append(img);
+                container.append("<br>" + "<br>");
+            }
+
             inputbox.val("");
             $("#container").stop().animate({
                 scrollTop: $("#container")[0].scrollHeight

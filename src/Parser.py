@@ -56,12 +56,26 @@ class Parser:
         else:
             self.error()
 
+    def argument_list(self):
+        self.consume(LPAREN)
+
+        result = [self.expr()]
+
+        while self.current_token.type == SEPERATOR:
+            self.consume(SEPERATOR)
+
+            result.append(self.expr())
+
+        self.consume(RPAREN)
+
+        return result
+
     def function_call(self):
         function_name = self.current_token.value.lower()
 
         self.consume(IDENTIFIER)
 
-        args = self.paren_expr()
+        args = self.argument_list()
 
         return FuncCall(function_name, args)
 
@@ -86,6 +100,16 @@ class Parser:
             self.error()
 
     def factor(self):
+        operator = None
+
+        if self.current_token.type == PLUS:
+            self.consume(PLUS)
+            operator = PLUS
+
+        elif self.current_token.type == MINUS:
+            self.consume(MINUS)
+            operator = MINUS
+
         tree = self.atom()
 
         while self.current_token.type == POW:
@@ -93,52 +117,39 @@ class Parser:
             result = self.factor()
             tree = BinOp(tree, Token(POW, '^'), result)
 
-        return tree
-
-    def term(self):
-        operator = None
-
-        if self.current_token.type == PLUS:
-            self.consume(PLUS)
-
-            operator = PLUS
-
-        elif self.current_token.type == MINUS:
-            self.consume(MINUS)
-
-            operator = MINUS
-
-        tree = self.factor()
-
-        if self.current_token.type in (LPAREN, MUL, DIV):
-            while self.current_token.type in (LPAREN, MUL, DIV):
-                if self.current_token.type == LPAREN:
-                    result = self.paren_expr()
-
-                    while self.current_token.type == POW:
-                        self.consume(POW)
-                        factor = self.factor()
-                        result = BinOp(result, Token(POW, '^'), factor)
-
-                    tree = BinOp(tree, Token(MUL, '*'), result)
-
-                elif self.current_token.type == MUL:
-                    self.consume(MUL)
-                    other = self.factor()
-
-                    tree = BinOp(tree, Token(MUL, '*'), other)
-                elif self.current_token.type == DIV:
-                    self.consume(DIV)
-                    other = self.factor()
-
-                    tree = BinOp(tree, Token(DIV, '/'), other)
-
         if operator == PLUS:
             return UnaryOp(tree, Token(PLUS, '+'))
-        if operator == MINUS:
+        elif operator == MINUS:
             return UnaryOp(tree, Token(MINUS, '-'))
         else:
             return tree
+
+    def term(self):
+        tree = self.factor()
+
+        while self.current_token.type in (LPAREN, MUL, DIV):
+            if self.current_token.type == LPAREN:
+                result = self.paren_expr()
+
+                while self.current_token.type == POW:
+                    self.consume(POW)
+                    factor = self.factor()
+                    result = BinOp(result, Token(POW, '^'), factor)
+
+                tree = BinOp(tree, Token(MUL, '*'), result)
+
+            elif self.current_token.type == MUL:
+                self.consume(MUL)
+                other = self.factor()
+
+                tree = BinOp(tree, Token(MUL, '*'), other)
+            elif self.current_token.type == DIV:
+                self.consume(DIV)
+                other = self.factor()
+
+                tree = BinOp(tree, Token(DIV, '/'), other)
+
+        return tree
 
     def expr(self):
         tree = self.term()

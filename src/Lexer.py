@@ -10,6 +10,7 @@ INT = 'INT'
 REAL = 'REAL'
 POW = 'POW'
 IDENTIFIER = 'IDENTIFIER'
+SEPERATOR = 'SEPERATOR'
 EOF = 'EOF'
 
 
@@ -37,7 +38,6 @@ class Lexer:
         {}
         {}^
         """.format(self.text.current_char, self.text.row, self.text.col, error_line, " " * (self.text.col - 1), " " * (self.text.col - 1), 2)
-
 
         raise ValueError(error_string)
 
@@ -115,6 +115,14 @@ class Lexer:
             if self.text.current_char == '^':
                 self.text.advance()
                 return Token(POW, '^')
+
+            if self.text.current_char == ',':
+                self.text.advance()
+                return Token(SEPERATOR, ',')
+
+            if self.text.current_char == ';':
+                self.text.advance()
+                return Token(SEPERATOR, ';')
 
             self.error()
 

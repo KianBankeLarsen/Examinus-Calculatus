@@ -1,8 +1,6 @@
 from src.Parser import *
-from src.Functions import *
 from graphviz import Graph
 
-function_handler = Function()
 
 class NodeVisitor:
     def visit(self, node):
@@ -59,7 +57,12 @@ class DOTGenerator(NodeVisitor):
     def visit_FuncCall(self, node):
         id1 = self.add_node("FuncCall")
         id2 = self.add_node(node.function)
-        id3 = self.visit(node.args)
+        id3 = self.add_node("Args")
+
+        for arg in node.args:
+            id_n = self.visit(arg)
+
+            self.add_edge(id3, id_n)
 
         self.add_edge(id1, id2)
         self.add_edge(id1, id3)
@@ -68,7 +71,7 @@ class DOTGenerator(NodeVisitor):
 
 
 # Creates a stream of characters for the lexer
-#source = InputStream("sqrt (3*3)")
+#source = InputStream("sqrt (2^4)")
 # Creates a lexer and passes the character stream to the lexer which functions as a stream of tokens
 #lex = Lexer(source)
 # Creates a parser and passes the token stream from the lexer to the parser
@@ -81,8 +84,10 @@ class DOTGenerator(NodeVisitor):
 #graph_generator.graph.format = 'png'
 #graph_generator.graph.render()
 
-
 class Interpreter(NodeVisitor):
+    def __init__(self, function_handler=None):
+        self.function_handler = function_handler
+
     def visit_BinOp(self, node):
         operator = node.operator.type
 
@@ -110,11 +115,152 @@ class Interpreter(NodeVisitor):
             return - factor
 
     def visit_Number(self, node):
-        return node.value
+        if isinstance(node.value, int) or node.value.is_integer():
+            return IntegerResult(int(node.value))
+        else:
+            return FloatResult(node.value)
 
     def visit_FuncCall(self, node):
-        return function_handler.call(node.function, [self.visit(node.args)])
+        result = self.function_handler.call(node.function, node.args)
+
+        if result.type == "integer" or result.type == "float":
+            return result
+        elif result.type == "image":
+            return result
+        return
+
+# Handles return-values from built-in functions
+class Result:
+    def __init__(self, type):
+        self.type = type
+
+    def handle_operation(self, other, func):
+        if isinstance(other, IntegerResult) or isinstance(other, FloatResult):
+            result = func(self.value, other.value)
+
+            if isinstance(result, int):
+                return IntegerResult(result)
+            elif result.is_integer():
+                return IntegerResult(int(result))
+            else:
+                return FloatResult(result)
+
+        elif isinstance(other, int) or isinstance(other, float):
+            result = func(self.value, other)
+
+            if isinstance(result, int):
+                return IntegerResult(result)
+            elif result.is_integer():
+                return IntegerResult(int(result))
+            else:
+                return FloatResult(result)
 
 
-#interpreter = Interpreter()
-#print(interpreter.visit(result))
+class IntegerResult(Result):
+    def __init__(self, value):
+        super().__init__("integer")
+        self.value = value
+
+    def __add__(self, other):
+        return self.handle_operation(other, lambda a, b: a + b)
+
+    def __sub__(self, other):
+        return self.handle_operation(other, lambda a, b: a - b)
+
+    def __mul__(self, other):
+        return self.handle_operation(other, lambda a, b: a * b)
+
+    def __truediv__(self, other):
+        return self.handle_operation(other, lambda a, b: a / b)
+
+    def __neg__(self):
+        return IntegerResult(-self.value)
+
+    def __pow__(self, power, modulo=None):
+        return self.handle_operation(power, lambda a, b: a ** b)
+
+    def __str__(self):
+        return str(self.value)
+
+
+class FloatResult(Result):
+    def __init__(self, value, precision=15):
+        super().__init__("float")
+        self.value = value
+
+    def __add__(self, other):
+        return self.handle_operation(other, lambda a, b: a + b)
+
+    def __sub__(self, other):
+        return self.handle_operation(other, lambda a, b: a - b)
+
+    def __mul__(self, other):
+        return self.handle_operation(other, lambda a, b: a * b)
+
+    def __truediv__(self, other):
+        return self.handle_operation(other, lambda a, b: a / b)
+
+    def __neg__(self):
+        return FloatResult(-self.value)
+
+    def __pow__(self, power, modulo=None):
+        return self.handle_operation(power, lambda a, b: a ** b)
+
+    def __str__(self):
+        return str(self.value)
+
+
+class RationalResult(Result):
+    def __init__(self):
+        super().__init__("rational")
+
+
+class ImageResult(Result):
+    def __init__(self, image):
+        super().__init__("image")
+        self.image = image
+
+
+class FunctionHandler:
+    def __init__(self):
+        self.interpreter = Interpreter()
+        self.graph_generator = DOTGenerator()
+    def call(self, func_name, args):
+        to_call = getattr(self, func_name, self.generic_call)
+        return to_call(args)
+
+    def generic_call(self, function):
+        raise Exception("Error: function called '{}' not defined.".format("UNKOWN"))
+
+    def check_args(self, amount, min_args, max_args=None):
+        if not max_args and amount >= min_args:
+            return None
+
+        if not (max_args >= amount >= min_args):
+            raise Exception("Unexpected amount of arguments.")
+
+    def sqrt(self, args):
+        self.check_args(len(args), 1, 1)
+
+        value = self.interpreter.visit(args[0])
+
+        result = value ** (1/2)
+
+        return result
+
+    def parse(self, args):
+        self.check_args(len(args), 1, 1)
+
+        expression = args[0]
+
+        self.graph_generator.visit(expression)
+        self.graph_generator.graph.format = 'jpeg'
+
+        result = self.graph_generator.graph.pipe()
+
+        return ImageResult(result)
+
+
+
+
+#print(interpreter.visit(result).value)
