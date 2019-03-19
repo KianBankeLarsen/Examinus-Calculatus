@@ -100,12 +100,18 @@ $(document).ready(function() {
         btn.classList.add("buttonfunc");
         const paste_name = i;
         $(btn).click(function() {
+            var array = inputbox[0].selectionStart - inputbox[0].selectionEnd;
             cursorpos = inputbox[0].selectionStart;
             insertAtCursor(inputbox[0], listBrand[paste_name], cursorpos);
-            var new_cursorpos = listBrand[paste_name].length - 1;
-            console.log(paste_name);
-            inputbox[0].selectionStart = inputbox[0].selectionEnd = cursorpos + new_cursorpos;
-            inputbox.focus();
+            if (array === 0) {
+                var new_cursorpos = listBrand[paste_name].length - 1;
+                inputbox[0].selectionStart = inputbox[0].selectionEnd = cursorpos + new_cursorpos;
+                inputbox.focus();
+            } else {
+                new_cursorpos = inputbox.val().length;
+                inputbox[0].selectionStart = inputbox[0].selectionEnd = cursorpos + new_cursorpos;
+                inputbox.focus();
+            }
         });
         btn.appendChild(t);
         $('#sidebar').append(btn);
@@ -121,10 +127,15 @@ $(document).ready(function() {
 
     function insertAtCursor(myField, myValue, cursorpos) {
         //MOZILLA and others
-        if (myField.selectionStart || myField.selectionStart == '0') {
+        var array = inputbox[0].selectionStart - inputbox[0].selectionEnd;
+        if (array === 0) {
             myField.value = myField.value.substring(0, cursorpos) +
                 myValue +
                 myField.value.substring(cursorpos, myField.value.length);
+        } else if (array !== 0) {
+            myField.value = myField.value.substring(0, cursorpos) +
+                myValue.slice(0, -1) +
+                myField.value.substring(cursorpos, myField.value.length) + ")";
         } else {
             myField.value += myValue;
         }
