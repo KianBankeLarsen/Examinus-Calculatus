@@ -143,7 +143,7 @@ $(document).ready(function() {
         //MOZILLA and others
         var array = inputbox[0].selectionStart - inputbox[0].selectionEnd;
 
-        if (array === 0) {
+        if (array === 0 && myValue.slice(-1) === ')') {
             myField.value = myField.value.substring(0, cursorpos) +
                 myValue +
                 myField.value.substring(cursorpos, myField.value.length);
