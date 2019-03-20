@@ -1,9 +1,10 @@
-var listBrand = ['sin()', 'cos()', 'tan()', 'arcsin()', 'arccos()', 'arctan()', 'sinh()', 'cosh()', 'tanh()', 'parse()',
+var btnFunctions = ['sin()', 'cos()', 'tan()', 'arcsin()', 'arccos()', 'arctan()', 'sinh()', 'cosh()', 'tanh()', 'parse()',
     'LEXUS', 'AUDI', 'MAYBACK', 'FERRARI', 'TOYOTA', 'LEXUS', 'AUDI', 'MAYBACK', 'FERRARI', 'TOYOTA', 'LEXUS', 'AUDI',
     'MAYBACK', 'FERRARI', 'TOYOTA'
 ];
-//the array
+
 $(document).ready(function() {
+    // GLOBAL VARIABLES //
     var list = [];
     var n = 0;
     var cursorpos = 0;
@@ -12,6 +13,8 @@ $(document).ready(function() {
     var container = $("#container");
     var down = false;
 
+
+    // GET_REQUEST //
     async function get_result(expression) {
         var result;
         var url = '/calc/' + expression;
@@ -21,6 +24,9 @@ $(document).ready(function() {
         console.log(result);
         return result
     }
+
+
+    // CHECK IF ENTER IS PRESSED, CALL GET REQUEST, CLEAR INPUT, SCROLL DOWN //
     inputbox.keydown(async function(e) {
         cursorpos = inputbox[0].selectionStart;
         if (e.which === 13 && inputbox.val().trim() !== "") {
@@ -47,12 +53,14 @@ $(document).ready(function() {
                 container.append(img);
                 container.append("<br>" + "<br>");
             }
-
             inputbox.val("");
             $("#container").stop().animate({
                 scrollTop: $("#container")[0].scrollHeight
             }, 1500);
         }
+
+
+        // GETTING LATEST SENT EXPRESSION | MOVING BACK IN LIST //
         if (e.which === 38) {
             if (down) {
                 return;
@@ -66,6 +74,8 @@ $(document).ready(function() {
             down = true;
         }
 
+
+        // GETTING LATEST SENT EXPRESSION | MOVING FORWARD IN LIST //
         if (e.which === 40) {
             if (down) {
                 return;
@@ -82,9 +92,15 @@ $(document).ready(function() {
             down = true;
         }
     });
-    inputbox.keyup(function(e) {
+
+
+    // CHECK IF KEY IS UP //
+    inputbox.keyup(function() {
         down = false;
     });
+
+
+    // HAMBURGER BUTTON CLASS ACTIVATION //
     $('.hamburger').click(function() {
         $('#sidebar').toggleClass('extendedsidebar');
         $('.hamburger').toggleClass('is-active');
@@ -94,51 +110,62 @@ $(document).ready(function() {
         inputbox.focus();
     });
 
-    for (var i = 0; i < listBrand.length; i++) {
+
+    // CREATING BUTTONS AND CORRESPONDING FUNCTION //
+    for (var i = 0; i < btnFunctions.length; i++) {
         var btn = document.createElement("button");
-        var t = document.createTextNode(listBrand[i]);
+        var t = document.createTextNode(btnFunctions[i]);
         btn.classList.add("buttonfunc");
         const paste_name = i;
         $(btn).click(function() {
-            var array = inputbox[0].selectionStart - inputbox[0].selectionEnd;
             cursorpos = inputbox[0].selectionStart;
-            insertAtCursor(inputbox[0], listBrand[paste_name], cursorpos);
-            if (array === 0) {
-                var new_cursorpos = listBrand[paste_name].length - 1;
-                inputbox[0].selectionStart = inputbox[0].selectionEnd = cursorpos + new_cursorpos;
-                inputbox.focus();
-            } else {
-                new_cursorpos = inputbox.val().length;
-                inputbox[0].selectionStart = inputbox[0].selectionEnd = cursorpos + new_cursorpos;
-                inputbox.focus();
-            }
+            insertAtCursor(inputbox[0], btnFunctions[paste_name], cursorpos);
         });
         btn.appendChild(t);
         $('#sidebar').append(btn);
     }
 
-    inputbox.click(async function(e) {
+
+    // UPDATES NEW CURSOR PLACEMENT ON CLICK //
+    inputbox.click(async function() {
         cursorpos = inputbox[0].selectionStart;
     });
 
-    inputbox.keyup(async function(e) {
+
+    // UPDATES NEW CURSOR PLACEMENT ON KEYUP //
+    inputbox.keyup(async function() {
         cursorpos = inputbox[0].selectionStart;
     });
 
+
+    // INSERT AT CURSOR FUNCTION - BUTTON FUNCTIONALITY //
     function insertAtCursor(myField, myValue, cursorpos) {
         //MOZILLA and others
         var array = inputbox[0].selectionStart - inputbox[0].selectionEnd;
+
         if (array === 0) {
             myField.value = myField.value.substring(0, cursorpos) +
                 myValue +
                 myField.value.substring(cursorpos, myField.value.length);
-        } else if (array !== 0) {
+            inputbox[0].selectionStart = inputbox[0].selectionEnd = cursorpos + myValue.length - 1;
+            inputbox.focus();
+
+        } else if (array !== 0 && myValue.slice(-1) === ')') {
             myField.value = myField.value.substring(0, cursorpos) +
                 myValue.slice(0, -1) +
-                myField.value.substring(cursorpos, myField.value.length) + ")";
+                myField.value.substring(cursorpos, myField.value.length) + myValue.slice(-1);
+            inputbox.focus();
+
         } else {
-            myField.value += myValue;
+            myField.value = myField.value.substring(0, cursorpos) +
+                myValue +
+                myField.value.substring(cursorpos, myField.value.length);
+            inputbox[0].selectionStart = inputbox[0].selectionEnd = cursorpos + myValue.length;
+            inputbox.focus();
         }
     }
+
+
+    // READY TO START | LOGGING IN CONSOLE //
     console.log("ready!");
 });
