@@ -1,12 +1,16 @@
 var btnFunctions = ['sin()', 'cos()', 'tan()', 'arcsin()', 'arccos()', 'arctan()', 'sinh()', 'cosh()', 'tanh()', 'parse()',
-    'LEXUS', 'AUDI', 'MAYBACK', 'FERRARI', 'TOYOTA', 'LEXUS', 'AUDI', 'MAYBACK', 'FERRARI', 'TOYOTA', 'LEXUS', 'AUDI',
-    'MAYBACK', 'FERRARI', 'TOYOTA'
+    'e', 'AUDI', 'MAYBACK', 'FERRARI', 'TOYOTA', 'LEXUS', 'AUDI', 'MAYBACK', 'FERRARI', 'TOYOTA', 'LEXUS', 'AUDI',
+    'MAYBACK', 'FERRARI'
 ];
+
 
 $(document).ready(function() {
     // GLOBAL VARIABLES //
     var list = [];
+    var keys = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 171, 107, 173, 109];
+    var changes_inputbox = [];
     var n = 0;
+    var p = 0;
     var cursorpos = 0;
     var inputbox = $("#inputbox");
     inputbox.focus();
@@ -21,7 +25,7 @@ $(document).ready(function() {
         await $.get(url, function(data, status, xhr) {
             result = [data, xhr];
         });
-        console.log(result);
+        //console.log(result);
         return result
     }
 
@@ -35,6 +39,7 @@ $(document).ready(function() {
             }
             down = true;
             n = 0;
+            changes_inputbox = [];
             var inputbox_content = inputbox.val();
             var response = await get_result(inputbox_content);
             var data = response[0];
@@ -62,42 +67,94 @@ $(document).ready(function() {
 
         // GETTING LATEST SENT EXPRESSION | MOVING BACK IN LIST //
         if (e.which === 38) {
-            if (down) {
-                return;
-            }
-            if (0 <= n && n <= list.length) {
-                if (n !== list.length) {
-                    n += 1;
-                    inputbox.val(list[list.length - n]);
-                }
-            }
-            down = true;
+            moveBackInList(list)
         }
 
 
         // GETTING LATEST SENT EXPRESSION | MOVING FORWARD IN LIST //
         if (e.which === 40) {
-            if (down) {
-                return;
-            }
-            if (list.length >= n && n > 0) {
-                if (n !== 1) {
-                    n -= 1;
-                    inputbox.val(list[list.length - n]);
-                } else {
-                    inputbox.val("");
-                    n = 0;
-                }
-            }
-            down = true;
+            moveForwardInList(list)
         }
+
+
+        // NEW SPECIFIC UNDO AND REDO FUNCTION //
+        if (e.which === 89 && e.ctrlKey) {
+            redo(changes_inputbox)
+
+        } else if (e.which === 90 && e.ctrlKey) {
+            undo(changes_inputbox)
+        }
+
+        // UPDATES CHANGES_INPUTBOX //
+        /*if (keys.includes(e.which)) {
+            changes_inputbox.push(inputbox.val());
+        }*/
+        //console.log(e.which);
     });
 
-
-    // CHECK IF KEY IS UP //
-    inputbox.keyup(function() {
+    inputbox.keyup(async function() {
+        // SET KEY DOWN TO FALSE //
         down = false;
+
+        // UPDATES NEW CURSOR PLACEMENT ON KEYUP //
+        cursorpos = inputbox[0].selectionStart;
     });
+
+
+    function undo(listName) {
+        if (p === 0){
+            p += 1;
+        }
+        if (0 <= p && p <= listName.length) {
+            if (p !== listName.length) {
+                p += 1;
+                inputbox.val(listName[listName.length - p]);
+            }
+        }
+        down = true;
+    }
+
+
+    function redo(listName) {
+        if (listName.length >= p && p > 0) {
+            if (p !== 1) {
+                p -= 1;
+                inputbox.val(listName[listName.length - p]);
+            }
+        }
+        down = true;
+    }
+
+
+    function moveBackInList(listName) {
+        if (down) {
+            return;
+        }
+        if (0 <= n && n <= listName.length) {
+            if (n !== listName.length) {
+                n += 1;
+                inputbox.val(listName[listName.length - n]);
+            }
+        }
+        down = true;
+    }
+
+
+    function moveForwardInList(listName) {
+        if (down) {
+            return;
+        }
+        if (listName.length >= n && n > 0) {
+            if (n !== 1) {
+                n -= 1;
+                inputbox.val(listName[listName.length - n]);
+            } else {
+                inputbox.val("");
+                n = 0;
+            }
+        }
+        down = true;
+    }
 
 
     // HAMBURGER BUTTON CLASS ACTIVATION //
@@ -119,7 +176,10 @@ $(document).ready(function() {
         const paste_name = i;
         $(btn).click(function() {
             cursorpos = inputbox[0].selectionStart;
+            changes_inputbox.push(inputbox.val());
             insertAtCursor(inputbox[0], btnFunctions[paste_name], cursorpos);
+            changes_inputbox.push(inputbox.val());
+            console.log(changes_inputbox);
         });
         btn.appendChild(t);
         $('#sidebar').append(btn);
@@ -128,12 +188,6 @@ $(document).ready(function() {
 
     // UPDATES NEW CURSOR PLACEMENT ON CLICK //
     inputbox.click(async function() {
-        cursorpos = inputbox[0].selectionStart;
-    });
-
-
-    // UPDATES NEW CURSOR PLACEMENT ON KEYUP //
-    inputbox.keyup(async function() {
         cursorpos = inputbox[0].selectionStart;
     });
 
@@ -164,6 +218,14 @@ $(document).ready(function() {
             inputbox.focus();
         }
     }
+
+
+    // DISABLES HTE BROWSERS BUILT-IN UNDO AND REDO FUNCTIONALITY //
+    $(window).bind('keydown', function(evt) {
+        if ((evt.ctrlKey || evt.metaKey) && String.fromCharCode(evt.which).toLowerCase() == 'z') {
+            evt.preventDefault();
+        }
+    });
 
 
     // READY TO START | LOGGING IN CONSOLE //
