@@ -41,6 +41,13 @@ $(document).ready(function() {
             n = 0;
             changes_inputbox = [];
             var inputbox_content = inputbox.val();
+
+            if (inputbox_content === 'clear'){
+                container.empty();
+                inputbox.val("");
+                return
+            }
+
             var response = await get_result(inputbox_content);
             var data = response[0];
             var header = response[1];
