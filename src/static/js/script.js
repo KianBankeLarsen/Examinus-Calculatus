@@ -42,7 +42,7 @@ $(document).ready(function() {
             changes_inputbox = [];
             var inputbox_content = inputbox.val();
 
-            if (inputbox_content === 'clear'){
+            if (inputbox_content.toLowerCase() === 'clear'){
                 container.empty();
                 inputbox.val("");
                 return
