@@ -1,0 +1,126 @@
+ @font-face {
+     font-family: codeFont;
+     src: url(DejaVuSansMono.ttf);
+}
+ body {
+     font-family: codeFont;
+     background-color: #1d1f21;
+     padding: 0;
+     margin: 0;
+}
+ #container {
+     scrollbar-width: thin;
+     scrollbar-color: #f1c40f #1d1f21;
+     overflow: auto;
+     top: 0;
+     background-color: #1d1f21;
+     bottom: 1.65em;
+     padding:.3em;
+     font-size: 3em;
+     flex:1;
+}
+ #inputContainer {
+     display: flex;
+     width: 100%;
+     bottom:0;
+     height:5em;
+     padding:.5em;
+     background-color: #282a2e;
+     box-sizing: border-box;
+     padding-right: 0;
+}
+ #inputbox {
+     flex: 1;
+     height: 100%;
+     flex-basis: 100%;
+     font-size: 3em;
+     background-color: transparent;
+     color: white;
+     border: 0;
+     caret-color: #f1c40f;
+     border-right:1px #9c9c9e solid;
+}
+ input{
+     font-family: inherit;
+}
+/*Chrome, Safari, Opera*/
+ ::-webkit-scrollbar {
+     width: 6px;
+}
+ ::-webkit-scrollbar-track {
+     background: #1d1f21;
+}
+ ::-webkit-scrollbar-thumb {
+     background: #f1c40f;
+}
+/* Handle on hover */
+ ::-webkit-scrollbar-thumb:hover {
+     background: #c49f0a;
+}
+ .buttonfunc{
+     flex-basis: 49%;
+     height: 10vh;
+     background-color: #f1c40f;
+     border: none;
+     color: white;
+     font-size: 30px;
+     cursor: pointer;
+     margin: auto;
+     margin-top: .1em;
+     margin-bottom: .1em;
+}
+ .buttonfunc:hover {
+     opacity: 0.7;
+}
+ #sidebar {
+     display: flex;
+     flex-wrap: wrap;
+     scrollbar-width: thin;
+     scrollbar-color: #f1c40f #1d1f21;
+     overflow: auto;
+     background-color: #1d1f21;
+     width: 0;
+     margin-left: 0;
+     color: white;
+}
+ .wrapper {
+     display: flex;
+     height: 100vh;
+     width: 100%;
+     overflow-wrap: anywhere;
+}
+ #notsidebar{
+     flex: 1;
+     background-color: #1d1f21;
+     display: flex;
+     flex-direction: column;
+}
+ #sidebar.extendedsidebar{
+     width: 25%
+}
+
+ .paren {
+     color: #c5c8c6ff;
+ }
+
+ .number {
+     color: #de935f;
+ }
+
+ .function {
+     color: #81a2be;
+ }
+
+ .identifier {
+     color: #cc6666;
+ }
+
+ .symbol {
+     color: #8abeb7;
+ }
+
+ @media screen and (max-width: 1050px) {
+     .buttonfunc {
+         flex-basis: 100%;
+    }
+ }
