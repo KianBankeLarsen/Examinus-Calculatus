@@ -30,4 +30,4 @@ A simple online CAS system. The project was written as an exam project.
 * © Kian Banke Larsen, Odense Tekniske Gymnasium, Denmark.
 * © Markus Solecki Ellyton, Odense Tekniske Gymnasium, Denmark.
 
-Licensed under the MIT License [MIT License](LICENSE).
+Licensed under the [MIT License](LICENSE).
