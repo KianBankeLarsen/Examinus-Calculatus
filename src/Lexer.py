@@ -12,6 +12,7 @@ POW = 'POW'
 IDENTIFIER = 'IDENTIFIER'
 SEPERATOR = 'SEPERATOR'
 FACTORIAL = 'FACTORIAL'
+STRING = 'STRING'
 EOF = 'EOF'
 
 
@@ -73,6 +74,26 @@ class Lexer:
             self.text.advance()
 
         return Token(IDENTIFIER, result)
+
+    def string(self):
+        result = ''
+
+        self.text.advance()
+
+        while self.text.current_char != '"':
+            if self.text.current_char is None:
+                break
+
+            else:
+                result += self.text.current_char
+                self.text.advance()
+
+        else:
+            self.text.advance()
+            return result
+
+        self.error()
+
     # MAIN LEXER FUNCTION #
     def get_next_token(self):
         while self.text.current_char is not None:
@@ -129,6 +150,17 @@ class Lexer:
                 self.text.advance()
                 return Token(FACTORIAL, '!')
 
+            if self.text.current_char == '"':
+                result = self.string()
+                return Token(STRING, result)
+
             self.error()
 
         return Token(EOF, 'EOF')
+
+inputstream = InputStream('plot("3*x+4")')
+lexer = Lexer(inputstream)
+print(lexer.get_next_token())
+print(lexer.get_next_token())
+print(lexer.get_next_token())
+print(lexer.get_next_token())

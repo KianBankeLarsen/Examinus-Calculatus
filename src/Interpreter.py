@@ -1,6 +1,14 @@
 from src.Parser import *
 from graphviz import Graph
 import math
+from functools import reduce
+import gmpy2
+import subprocess
+from threading import Thread
+from queue import Queue, Empty
+
+"""pg.c('set terminal jpeg')
+pg.c('set output "plot.jpeg"')"""
 
 
 class NodeVisitor:
@@ -70,6 +78,11 @@ class DOTGenerator(NodeVisitor):
 
         return id1
 
+    def visit_String(self, node):
+        id1 =self.add_node(node.text)
+
+        return id1
+
 
 # Creates a stream of characters for the lexer
 #source = InputStream("2!")
@@ -132,7 +145,8 @@ class Interpreter(NodeVisitor):
             return result
         elif result.type == "image":
             return result
-        return
+        elif result.type == "text":
+            return result
 
 # Handles return-values from built-in functions
 class Result:
@@ -235,6 +249,49 @@ class ImageResult(Result):
         self.image = image
 
 
+class TextResult(Result):
+    def __init__(self, text):
+        super().__init__("text")
+        self.text = text
+
+
+class NonBlockingStreamReader:
+
+    def __init__(self, stream):
+        '''
+        stream: the stream to read from.
+                Usually a process' stdout or stderr.
+        '''
+
+        self._s = stream
+        self._q = Queue()
+
+        def _populateQueue(stream, queue):
+            '''
+            Collect lines from 'stream' and put them in 'quque'.
+            '''
+
+            while True:
+                line = stream.readline()
+                if line:
+                    queue.put(line)
+                else:
+                    raise UnexpectedEndOfStream
+
+        self._t = Thread(target=_populateQueue, args=(self._s, self._q))
+        self._t.daemon = True
+        self._t.start() #start collecting lines from the stream
+
+    def readline(self, timeout = None):
+        try:
+            return self._q.get(block=timeout is not None, timeout=timeout)
+        except Empty:
+            return None
+
+
+class UnexpectedEndOfStream(Exception): pass
+
+
 class FunctionHandler:
     def __init__(self):
         self.interpreter = None
@@ -268,9 +325,9 @@ class FunctionHandler:
 
         value = self.interpreter.visit(args[0])
 
-        result = value ** (1/2)
+        result = math.sqrt(value)
 
-        return result
+        return self.make_number(result)
 
     def sin(self, args):
         self.check_args(len(args), 1, 1)
@@ -279,7 +336,7 @@ class FunctionHandler:
 
         result = math.sin(math.radians(value))
 
-        return self.make_number(round(result, 15))
+        return self.make_number(result)
 
     def cos(self, args):
         self.check_args(len(args), 1, 1)
@@ -288,7 +345,7 @@ class FunctionHandler:
 
         result = math.cos(math.radians(value))
 
-        return self.make_number(round(result, 15))
+        return self.make_number(result)
 
     def tan(self, args):
         self.check_args(len(args), 1, 1)
@@ -297,7 +354,7 @@ class FunctionHandler:
 
         result = math.tan(math.radians(value))
 
-        return self.make_number(round(result, 15))
+        return self.make_number(result)
 
     def factorial(self, args):
         self.check_args(len(args), 1, 1)
@@ -307,6 +364,42 @@ class FunctionHandler:
         result = math.factorial(value)
 
         return self.make_number(result)
+
+    def gcd(self, args):
+        self.check_args(len(args), 1)
+
+        values = [int(self.interpreter.visit(arg)) for arg in args]
+
+        for value in values:
+            print(value)
+        result = reduce(math.gcd, values)
+
+        return self.make_number(result)
+
+    def isprime(self, args):
+        self.check_args(len(args), 1, 1)
+
+        value = self.interpreter.visit(args[0])
+
+        result = gmpy2.is_bpsw_prp(int(value))
+
+        result = TextResult(str(result))
+        print(result.text)
+
+        return result
+
+
+    def plot(self, args):
+        self.check_args(len(args), 1, 1)
+
+        function = "plot " + args[0].text
+        print(function)
+
+        p = subprocess.Popen(["gnuplot", "-e", "set terminal jpeg; set output 'plot.jpeg'; {}".format(function)], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+
+        p.communicate()
+        with open('plot.jpeg', 'rb') as file:
+            return ImageResult(file.read())
 
     def parse(self, args):
         self.check_args(len(args), 1, 1)

@@ -26,9 +26,16 @@ def calc(expression):
         response = make_response(base64.b64encode(result.image))
         response.headers.set('Content-Type', 'image/jpeg')
         return response
-    elif result.type == 'float' or result.type == 'integer':
-        response = make_response(str(result.value))
+    elif result.type == 'float' or result.type == 'integer' or result.type == 'text':
+        if result.type == 'float':
+            response = make_response('{:.5f}'.format(result.value))
+        elif result.type == 'integer':
+            response = make_response(str(result.value))
+        elif result.type == 'text':
+            response = make_response(result.text)
+
         response.headers.set('Content-Type', 'text/plain')
+
         return response
 
 

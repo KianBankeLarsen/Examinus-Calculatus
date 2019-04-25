@@ -29,6 +29,11 @@ class FuncCall(AST):
         self.args = args
 
 
+class String(AST):
+    def __init__(self, text):
+        self.text = text
+
+
 class Parser:
     def __init__(self, lexer):
         self.lexer = lexer
@@ -168,6 +173,14 @@ class Parser:
         return tree
 
     def expr(self):
+        print(self.current_token)
+        if self.current_token.type == STRING:
+            result = self.current_token.value
+
+            self.consume(STRING)
+            return String(result)
+
+
         tree = self.term()
 
         while self.current_token.type in (PLUS, MINUS):
