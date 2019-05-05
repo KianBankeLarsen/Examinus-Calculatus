@@ -119,7 +119,7 @@
      color: #8abeb7;
  }
 
- @media screen and (max-width: 1050px) {
+ @media screen and (max-width: 1400px) {
      .buttonfunc {
          flex-basis: 100%;
     }

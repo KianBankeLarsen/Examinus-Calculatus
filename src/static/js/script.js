@@ -1,6 +1,5 @@
-var btnFunctions = ['sin()', 'cos()', 'tan()', 'arcsin()', 'arccos()', 'arctan()', 'sinh()', 'cosh()', 'tanh()', 'parse()',
-    'e', 'AUDI', 'MAYBACK', 'FERRARI', 'TOYOTA', 'LEXUS', 'AUDI', 'MAYBACK', 'FERRARI', 'TOYOTA', 'LEXUS', 'AUDI',
-    'MAYBACK', 'FERRARI'
+var btnFunctions = ['sin()', 'cos()', 'tan()', 'arcsin()', 'arccos()', 'arctan()', 'sinh()', 'cosh()', 'tanh()',
+    'fib()', 'parse()', 'isprime()', 'plot()', 'gcd()', 'integral()', 'derivative()', 'pi', 'e'
 ];
 
 

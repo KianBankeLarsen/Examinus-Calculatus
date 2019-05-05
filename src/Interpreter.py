@@ -1,4 +1,4 @@
-from src.Parser import *
+from Parser import *
 from graphviz import Graph
 import math
 from functools import reduce
