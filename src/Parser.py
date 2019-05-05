@@ -1,4 +1,4 @@
-from src.Lexer import *
+from Lexer import *
 
 
 class AST:

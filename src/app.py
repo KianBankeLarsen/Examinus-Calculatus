@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, make_response
-from src.Interpreter import *
+from Interpreter import *
 import base64
 
 
