@@ -61,3 +61,4 @@ To make it easy, there is an setup.py file in the root folder, which installs al
 * © Markus Solecki Ellyton, Odense Tekniske Gymnasium, Denmark.
 
 Licensed under the [MIT License](LICENSE).
+
